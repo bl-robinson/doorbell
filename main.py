@@ -39,7 +39,7 @@ class Cam():
 
         self.file_string = "/mnt/door-bell/%s.h264"
         self.cam = picamera.PiCamera()
-        self.cam.framerate = 24
+        self.cam.framerate = 10
         self.cam.resolution = (1280, 720)
         self.cam.hflip = True
         self.cam.vflip = True
