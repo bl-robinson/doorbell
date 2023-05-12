@@ -37,7 +37,7 @@ class Cam():
 
         address = ('0.0.0.0',9000)
 
-        self.file_string = "/mnt/door-bell/%s.h264"
+        self.file_string = "/mnt/doorbell/%s.h264"
         self.cam = picamera.PiCamera()
         self.cam.framerate = 10
         self.cam.resolution = (1280, 720)
