@@ -1,3 +1,4 @@
 picamera
 opencv-python
 pyshine
+RPi.GPIO
