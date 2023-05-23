@@ -3,20 +3,19 @@ import os
 from homeassistant_api import Client
 
 from signal import pause
-# from gpiozero import Button
+from gpiozero import Button
 
 API_TOKEN = os.getenv('HOME_ASSISTANT_TOKEN')
 API_URL = "https://home-assistant.blrobinson.uk/api"
 
 def button_pressed():
     print("Ding dong ding dong")
+    ring_doorbell()
     print("==========================")
 
 def button_released():
     print("Stop")
     print("++++++++++++++++++++++++++")
-
-
 
 def main():
     button = Button(21)
@@ -24,7 +23,7 @@ def main():
     button.when_released = button_released
     pause()
 
-def test_api():
+def ring_doorbell():
     with Client(
         API_URL, API_TOKEN
     ) as client:
@@ -57,4 +56,4 @@ def test_api():
         )
 
 if __name__ == "__main__":
-    test_api()
+    main()
