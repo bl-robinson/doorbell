@@ -30,6 +30,7 @@ def ring_doorbell():
         media_player = client.get_domain("media_player")
         bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
         media_player.turn_on(entity_id=bedroom_speaker.entity_id)
+        time.sleep(0.25)
         starting_volume = bedroom_speaker.state.attributes['volume_level']
 
         media_player.volume_set(
