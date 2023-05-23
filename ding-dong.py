@@ -41,14 +41,14 @@ def test_api():
             entity_id=bedroom_speaker.entity_id,
             media_content_id="media-source://media_source/local/doorbell-1.mp3",
             media_content_type="music",
-            announce=True
+            # announce=True # Not supported by google cast yet currently will just stop current thing playing
         )
         time.sleep(2)
         media_player.play_media(
             entity_id=bedroom_speaker.entity_id,
             media_content_id="media-source://media_source/local/doorbell-1.mp3",
             media_content_type="music",
-            announce=True
+            # announce=True # Not supported by google cast yet currently will just stop current thing playing
         )
         time.sleep(2)
         media_player.volume_set(
