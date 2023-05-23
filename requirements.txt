@@ -1,5 +1,5 @@
-# picamera
+picamera
 opencv-python
 pyshine
-# gpiozero
+gpiozero
 homeassistant-api
