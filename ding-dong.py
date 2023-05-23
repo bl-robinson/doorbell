@@ -28,10 +28,33 @@ def test_api():
     with Client(
         API_URL, API_TOKEN
     ) as client:
-        bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
-        print(bedroom_speaker)
         media_player = client.get_domain("media_player")
-        print(media_player.play_media(entity_id="media_player.bedroom_speaker", media_content_id="mixkit-bell-ring-buzzer-2962.wav"))
+        bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
+        media_player.turn_on(entity_id=bedroom_speaker.entity_id)
+        starting_volume = bedroom_speaker.state.attributes['volume_level']
+
+        media_player.volume_set(
+            entity_id=bedroom_speaker.entity_id,
+            volume_level=1
+        )
+        media_player.play_media(
+            entity_id=bedroom_speaker.entity_id,
+            media_content_id="media-source://media_source/local/doorbell-1.mp3",
+            media_content_type="music",
+            announce=True
+        )
+        time.sleep(2)
+        media_player.play_media(
+            entity_id=bedroom_speaker.entity_id,
+            media_content_id="media-source://media_source/local/doorbell-1.mp3",
+            media_content_type="music",
+            announce=True
+        )
+        time.sleep(2)
+        media_player.volume_set(
+            entity_id=bedroom_speaker.entity_id,
+            volume_level=starting_volume
+        )
 
 if __name__ == "__main__":
     test_api()
