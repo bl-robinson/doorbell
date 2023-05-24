@@ -30,23 +30,19 @@ def main():
 
 def ring_doorbell():
     with Client(
-        API_URL, API_TOKEN
+        API_URL, API_TOKEN, cache_session=False
     ) as client:
         media_player = client.get_domain("media_player")
         bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
 
         media_player.turn_on(entity_id=bedroom_speaker.entity_id)
         bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
-        speaker_off = True
-        while speaker_off:
-            try:
-                starting_volume = bedroom_speaker.state.attributes['volume_level']
-                speaker_off = False
-            except:
-                logger.warn("Waiting for speaker to turn on")
-                time.sleep(0.1)
-                bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
 
+        while bedroom_speaker.state.state == "off":
+            bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
+            time.sleep(0.1)
+
+        starting_volume = bedroom_speaker.state.attributes['volume_level']
         logger.info("Setting Volume to the Max")
         media_player.volume_set(
             entity_id=bedroom_speaker.entity_id,
