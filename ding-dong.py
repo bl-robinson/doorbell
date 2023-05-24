@@ -68,6 +68,7 @@ def ring_doorbell():
             entity_id=bedroom_speaker.entity_id,
             volume_level=starting_volume
         )
+        media_player.turn_off(entity_id=bedroom_speaker.entity_id)
 
 if __name__ == "__main__":
     main()
