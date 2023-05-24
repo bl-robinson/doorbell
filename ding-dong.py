@@ -5,7 +5,7 @@ import logging
 import sys
 
 from signal import pause
-from gpiozero import Button
+# from gpiozero import Button
 
 logging.basicConfig()
 logger = logging.getLogger('doorbell-button')
@@ -70,5 +70,49 @@ def ring_doorbell():
         )
         media_player.turn_off(entity_id=bedroom_speaker.entity_id)
 
+
+def test_alexa():
+    with Client(
+        API_URL, API_TOKEN, cache_session=False
+    ) as client:
+        media_player = client.get_domain("media_player")
+        alexa = client.get_entity(slug="ben_s_echo_dot", group_id="media_player")
+
+        media_player.turn_on(entity_id=alexa.entity_id)
+        alexa = client.get_entity(slug="ben_s_echo_dot", group_id="media_player")
+
+        while alexa.state.state == "off":
+            logger.info(alexa.state.state)
+            alexa = client.get_entity(slug="ben_s_echo_dot", group_id="media_player")
+            time.sleep(0.1)
+
+        starting_volume = alexa.state.attributes['volume_level']
+        logger.info("Setting Volume to the Max")
+        media_player.volume_set(
+            entity_id=alexa.entity_id,
+            volume_level=1
+        )
+        logger.info("Playing Doorbell")
+        media_player.play_media(
+            entity_id=alexa.entity_id,
+            media_content_id="media-source://media_source/local/doorbell-1.mp3",
+            media_content_type="music",
+            # announce=True # Not supported by google cast yet currently will just stop current thing playing
+        )
+        time.sleep(2)
+        media_player.play_media(
+            entity_id=alexa.entity_id,
+            media_content_id="media-source://media_source/local/doorbell-1.mp3",
+            media_content_type="music",
+            # announce=True # Not supported by google cast yet currently will just stop current thing playing
+        )
+        time.sleep(2)
+        logger.info(f"Reset Volume to: {starting_volume}")
+        media_player.volume_set(
+            entity_id=alexa.entity_id,
+            volume_level=starting_volume
+        )
+        media_player.turn_off(entity_id=alexa.entity_id)
+
 if __name__ == "__main__":
-    main()
+    test_alexa()
