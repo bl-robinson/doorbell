@@ -2,15 +2,14 @@ import time
 import os
 from homeassistant_api import Client
 import logging
-
-from systemd.journal import JournalHandler
+import sys
 
 from signal import pause
 from gpiozero import Button
 
 logging.basicConfig()
 logger = logging.getLogger('doorbell-button')
-logger.addHandler(JournalHandler())
+logger.addHandler(logging.StreamHandler(stream=sys.stdout))
 logger.setLevel(logging.INFO)
 
 API_TOKEN = os.getenv('HOME_ASSISTANT_TOKEN')
