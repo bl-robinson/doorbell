@@ -95,16 +95,14 @@ def test_alexa():
         logger.info("Playing Doorbell")
         media_player.play_media(
             entity_id=alexa.entity_id,
-            media_content_id="media-source://media_source/local/doorbell-1.mp3",
-            media_content_type="music",
-            # announce=True # Not supported by google cast yet currently will just stop current thing playing
+            media_content_id="amzn_sfx_doorbell_chime_01",
+            media_content_type="sound"
         )
         time.sleep(2)
         media_player.play_media(
             entity_id=alexa.entity_id,
-            media_content_id="media-source://media_source/local/doorbell-1.mp3",
-            media_content_type="music",
-            # announce=True # Not supported by google cast yet currently will just stop current thing playing
+            media_content_id="amzn_sfx_doorbell_chime_01",
+            media_content_type="sound"
         )
         time.sleep(2)
         logger.info(f"Reset Volume to: {starting_volume}")
