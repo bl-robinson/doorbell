@@ -13,7 +13,7 @@ logger.addHandler(logging.StreamHandler(stream=sys.stdout))
 logger.setLevel(logging.INFO)
 
 API_TOKEN = os.getenv('HOME_ASSISTANT_TOKEN')
-API_URL = "https://home-assistant.blrobinson.uk/api"
+API_URL = os.getenv('HOME_ASSISTANT_API_URL')
 
 def button_pressed():
     logger.info("Ding dong ding dong")
