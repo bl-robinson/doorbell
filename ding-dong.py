@@ -18,6 +18,8 @@ API_URL = os.getenv('HOME_ASSISTANT_API_URL')
 def button_pressed():
     logger.info("Ding dong ding dong")
     ring_doorbell()
+    photo_path = take_photo()
+    send_notification(photo_path)
 
 def button_released():
     logger.info("Stop")
@@ -27,6 +29,12 @@ def main():
     button.when_pressed = button_pressed
     button.when_released = button_released
     pause()
+
+def take_photo():
+    pass
+
+def send_notification(photo_url):
+    pass
 
 def ring_doorbell():
     with Client(
