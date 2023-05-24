@@ -33,6 +33,8 @@ def ring_doorbell():
         API_URL, API_TOKEN
     ) as client:
         media_player = client.get_domain("media_player")
+        bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
+
         media_player.turn_on(entity_id=bedroom_speaker.entity_id)
         bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
         speaker_off = True
