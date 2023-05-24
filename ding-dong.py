@@ -30,20 +30,21 @@ def ring_doorbell():
         media_player = client.get_domain("media_player")
         bedroom_speaker = client.get_entity(slug="bedroom_speaker", group_id="media_player")
         media_player.turn_on(entity_id=bedroom_speaker.entity_id)
-        print("Waiting for doorbell to turn on")
         speaker_off = True
         while speaker_off:
+            print("Waiting for doorbell to turn on")
             time.sleep(0.1)
             try:
                 starting_volume = bedroom_speaker.state.attributes['volume_level']
                 speaker_off = False
             except:
                 continue
-
+        print("Setting Volume")
         media_player.volume_set(
             entity_id=bedroom_speaker.entity_id,
             volume_level=1
         )
+        print("Playing Doorbell")
         media_player.play_media(
             entity_id=bedroom_speaker.entity_id,
             media_content_id="media-source://media_source/local/doorbell-1.mp3",
@@ -58,6 +59,7 @@ def ring_doorbell():
             # announce=True # Not supported by google cast yet currently will just stop current thing playing
         )
         time.sleep(2)
+        print("Reset Volume")
         media_player.volume_set(
             entity_id=bedroom_speaker.entity_id,
             volume_level=starting_volume
