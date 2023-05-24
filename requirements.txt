@@ -3,3 +3,4 @@ opencv-python
 pyshine
 gpiozero
 homeassistant-api
+systemd.journal
