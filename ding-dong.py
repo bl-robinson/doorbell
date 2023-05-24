@@ -5,7 +5,7 @@ import logging
 import sys
 
 from signal import pause
-# from gpiozero import Button
+from gpiozero import Button
 
 logging.basicConfig()
 logger = logging.getLogger('doorbell-button')
