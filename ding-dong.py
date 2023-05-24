@@ -1,21 +1,23 @@
 import time
 import os
 from homeassistant_api import Client
+import logging
 
 from signal import pause
 from gpiozero import Button
+
+logging.basicConfig()
+logger = logging.getLogger('doorbell-button')
 
 API_TOKEN = os.getenv('HOME_ASSISTANT_TOKEN')
 API_URL = "https://home-assistant.blrobinson.uk/api"
 
 def button_pressed():
-    print("Ding dong ding dong")
+    logger.info("Ding dong ding dong")
     ring_doorbell()
-    print("==========================")
 
 def button_released():
-    print("Stop")
-    print("++++++++++++++++++++++++++")
+    logger.info("Stop")
 
 def main():
     button = Button(21)
@@ -32,19 +34,19 @@ def ring_doorbell():
         media_player.turn_on(entity_id=bedroom_speaker.entity_id)
         speaker_off = True
         while speaker_off:
-            print("Waiting for doorbell to turn on")
-            time.sleep(0.1)
             try:
                 starting_volume = bedroom_speaker.state.attributes['volume_level']
                 speaker_off = False
             except:
-                continue
-        print("Setting Volume")
+                logger.warn("Waiting for speaker to turn on")
+                time.sleep(0.1)
+
+        logger.info("Setting Volume to the Max")
         media_player.volume_set(
             entity_id=bedroom_speaker.entity_id,
             volume_level=1
         )
-        print("Playing Doorbell")
+        logger.info("Playing Doorbell")
         media_player.play_media(
             entity_id=bedroom_speaker.entity_id,
             media_content_id="media-source://media_source/local/doorbell-1.mp3",
@@ -59,7 +61,7 @@ def ring_doorbell():
             # announce=True # Not supported by google cast yet currently will just stop current thing playing
         )
         time.sleep(2)
-        print("Reset Volume")
+        logger.info(f"Reset Volume to: {starting_volume}")
         media_player.volume_set(
             entity_id=bedroom_speaker.entity_id,
             volume_level=starting_volume
