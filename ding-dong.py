@@ -19,6 +19,7 @@ API_TOKEN = os.getenv('HOME_ASSISTANT_TOKEN')
 API_URL = os.getenv('HOME_ASSISTANT_API_URL')
 IMAGE_DESTINATION = os.getenv("UPLOAD_IMAGE_HOSTNAME")
 IMAGE_PORT = os.getenv("UPLOAD_IMAGE_PORT")
+IMAGE_DESTINATION_PATH = os.getenv("UPLOAD_IMAGE_DESTINATION_PATH")
 
 def button_pressed():
     logger.info("Ding dong ding dong")
@@ -50,7 +51,7 @@ def send_notification(photo_file):
     ssh.load_host_keys(os.path.expanduser(os.path.join("~", ".ssh", "known_hosts")))
     ssh.connect(IMAGE_DESTINATION, port=IMAGE_PORT, key_filename="~/.ssh/id_rsa")
     sftp = ssh.open_sftp()
-    sftp.put(photo_file, "/var/www/vhosts/default/images/grabs/.")
+    sftp.put(photo_file, IMAGE_DESTINATION_PATH)
     sftp.close()
     ssh.close()
     logger.info(f"Image Avaliable at https://grabs.blrobinson.uk/images/grabs/{photo_file}")
