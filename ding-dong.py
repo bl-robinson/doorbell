@@ -4,7 +4,9 @@ from homeassistant_api import Client
 import logging
 import sys
 import picamera
+import paramiko
 
+from datetime import datetime
 from signal import pause
 from gpiozero import Button
 
@@ -15,6 +17,8 @@ logger.setLevel(logging.INFO)
 
 API_TOKEN = os.getenv('HOME_ASSISTANT_TOKEN')
 API_URL = os.getenv('HOME_ASSISTANT_API_URL')
+IMAGE_DESTINATION = os.getenv("UPLOAD_IMAGE_HOSTNAME")
+IMAGE_PORT = os.getenv("UPLOAD_IMAGE_PORT")
 
 def button_pressed():
     logger.info("Ding dong ding dong")
@@ -33,12 +37,23 @@ def main():
 
 def take_photo():
     with picamera.PiCamera() as camera:
+        now = datetime.now()
+        filename = now.strftime("%Y-%m-%d_%H-%M-%S.jpeg")
         camera.resolution = (1920, 1080)
-        logger.info(f"Capturing image to {os.getcwd()}/image.jpeg")
-        camera.capture('image.jpeg', splitter_port=3, format='jpeg')
+        logger.info(f"Capturing image to {os.getcwd()}{filename}.jpeg")
+        camera.capture(filename, splitter_port=3, format='jpeg')
 
-def send_notification(photo_url):
-    pass
+    return f"{os.getcwd()}{filename}.jpeg"
+
+def send_notification(photo_file):
+    ssh = paramiko.SSHClient()
+    ssh.load_host_keys(os.path.expanduser(os.path.join("~", ".ssh", "known_hosts")))
+    ssh.connect(IMAGE_DESTINATION, port=IMAGE_PORT, key_filename="~/.ssh/id_rsa")
+    sftp = ssh.open_sftp()
+    sftp.put(photo_file, "/var/www/vhosts/default/images/grabs/.")
+    sftp.close()
+    ssh.close()
+    logger.info(f"Image Avaliable at https://grabs.blrobinson.uk/images/grabs/{photo_file}")
 
 def ring_doorbell():
     with Client(
