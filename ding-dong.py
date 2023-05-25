@@ -1,6 +1,5 @@
 import time
 import os
-from homeassistant_api import Client
 import logging
 import sys
 import picamera
@@ -9,6 +8,7 @@ import paramiko
 from datetime import datetime
 from signal import pause
 from gpiozero import Button
+from homeassistant_api import Client
 
 logging.basicConfig()
 logger = logging.getLogger('doorbell-button')
@@ -54,7 +54,7 @@ def send_notification(photo_file):
     sftp.put(photo_file, IMAGE_DESTINATION_PATH)
     sftp.close()
     ssh.close()
-    logger.info(f"Image Avaliable at https://grabs.blrobinson.uk/images/grabs/{photo_file}")
+    logger.info(f"Image Available at https://grabs.blrobinson.uk/images/grabs/{photo_file}")
 
 def ring_doorbell():
     with Client(
