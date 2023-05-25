@@ -34,6 +34,7 @@ def main():
 def take_photo():
     with picamera.PiCamera() as camera:
         camera.resolution = (1920, 1080)
+        logger.info(f"Capturing image to {os.cwd()}/image.jpeg")
         camera.capture('image.jpeg', splitter_port=3, format='jpeg')
 
 def send_notification(photo_url):
