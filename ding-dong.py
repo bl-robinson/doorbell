@@ -3,6 +3,7 @@ import os
 from homeassistant_api import Client
 import logging
 import sys
+import picamera
 
 from signal import pause
 from gpiozero import Button
@@ -31,7 +32,9 @@ def main():
     pause()
 
 def take_photo():
-    pass
+    with picamera.PiCamera() as camera:
+        camera.resolution = (1920, 1080)
+        camera.capture('image.jpeg', splitter_port=3, format='jpeg')
 
 def send_notification(photo_url):
     pass
