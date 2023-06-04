@@ -28,9 +28,11 @@ def button_released():
     logger.info("Stop")
 
 def main():
+    logger.info("Setup")
     button = Button(7)
     button.when_pressed = button_pressed
     button.when_released = button_released
+    logger.info("Listening")
     pause()
 
 def ring_doorbell():
