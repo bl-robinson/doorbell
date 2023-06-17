@@ -25,7 +25,7 @@ def button_released():
 
 def main():
     logger.info("Setup")
-    button = Button(7)
+    button = Button(7, bounce_time=0.01)
     button.when_pressed = button_pressed
     button.when_released = button_released
     logger.info("Listening")
